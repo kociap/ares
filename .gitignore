@@ -1,0 +1,9 @@
+# Unity
+Temp/
+Logs/
+Library/
+UserSettings/
+
+# Editors
+.vscode/
+.vs/
