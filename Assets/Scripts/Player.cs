@@ -1,18 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+[RequireComponent(typeof(Controller))]
+public class Player: MonoBehaviour {
+    private Controller controller;
+    private Vector2 movement;
+
+    private void Start() {
+        controller = GetComponent<Controller>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    private void FixedUpdate() {
+        Controller.UpdateParameters parameters = new Controller.UpdateParameters{
+            movement = movement,
+            dTime = Time.fixedDeltaTime,
+            time = Time.time
+        };
+        controller.UpdateController(parameters);
+    }
+
+    private void OnMove(InputValue input) {
+        movement = input.Get<Vector2>();
     }
 }
