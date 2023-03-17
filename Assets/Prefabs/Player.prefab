@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8332100633457825860}
   - component: {fileID: 7260848915116143973}
   - component: {fileID: 4995784671579257988}
+  - component: {fileID: 7221607007386269151}
   - component: {fileID: 4821966854379099849}
   - component: {fileID: 6264515573516957348}
   - component: {fileID: 5288378327924253529}
@@ -65,11 +66,21 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
-  collisionRayCount: 3
-  collisionRayLength: 0.1
-  collisionRayBuffer: 0.1
+  collisionPrecheckLength: 0.1
   collisionIterations: 10
   drawDebugShapes: 0
+--- !u!114 &7221607007386269151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5845802415393389151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0a50cea32056c4ab9662c20ef23f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4821966854379099849
 MonoBehaviour:
   m_ObjectHideFlags: 0
