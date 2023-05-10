@@ -12,7 +12,7 @@ public class WorldGenerator : MonoBehaviour
     public Room[] rooms;
     // Number of chances that each room has to generate
     public int roomGenerationChances;
-    // Size of generated world 
+    // Size of generated world
     public int width;
     public int height;
     // Types of objects that can generate, each coresponding to one tile type
@@ -154,7 +154,7 @@ public class WorldGenerator : MonoBehaviour
         else if(connectionsY.Count != 0)
         {
             return ConnectionType.VERTICAL;
-        }   
+        }
         return ConnectionType.HORIZONTAL;
     }
 
@@ -186,7 +186,7 @@ public class WorldGenerator : MonoBehaviour
     }
 
     // Determines where room borders will be
-    void ArrangeRoomBorders() 
+    void ArrangeRoomBorders()
     {
         for (int i = 0; i < width; i++)
         {
