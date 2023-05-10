@@ -4,33 +4,38 @@ using UnityEngine;
 
 public class Pixel : MonoBehaviour
 {
-    public int colorId = 0;
-    public GameObject red;
-    public GameObject green;
-    public GameObject blue;
-    
-    public void SetColor(int colorId)
+    private State state = State.EMPTY;
+    public GameObject[] states;
+
+    public Vector2 GetPosition()
     {
-        switch (colorId)
+        return new Vector2((transform.position.x), (transform.position.y));
+    }
+
+    public static Pixel[] GetPosition(Pixel[,] pixelArea, Vector2[] vectors)
+    {
+        Pixel[] vectorsPixels = new Pixel[vectors.Length];
+        for (int i = 0; i < vectors.Length; i++)
         {
-            case 0:
-                red.SetActive(true);
-                green.SetActive(false);
-                blue.SetActive(false);
-                this.colorId = 0;
-                break;
-            case 1:
-                red.SetActive(false);
-                green.SetActive(true);
-                blue.SetActive(false);
-                this.colorId = 1;
-                break;
-            default:
-                red.SetActive(false);
-                green.SetActive(false);
-                blue.SetActive(true);
-                this.colorId = 2;
-                break;
+            vectorsPixels[i] = pixelArea[(int)vectors[i].x, (int)vectors[i].y];
         }
+        return vectorsPixels;
+    }
+
+    public void SetState(State state)
+    {
+        this.state = state;
+    }
+
+    public State GetState()
+    {
+        return state;
+    }
+
+    public void GenerateTile(Transform parent)
+    {
+        if(state != State.EMPTY)
+            Instantiate(states[(int)state-1],
+                new Vector3(transform.position.x,transform.position.y,0),Quaternion.identity,parent);
     }
 }
