@@ -22,4 +22,7 @@ public class GeneralNPC: MonoBehaviour {
     }
 
     public void SetMovement(Vector2 vector) { movement = vector; }
+
+    public Controller GetController() { return controller; }
+
 }

@@ -126,4 +126,9 @@ public class Controller: MonoBehaviour {
         Gizmos.color = Color.green;
         Gizmos.DrawWireCube(transform.position + bounds.center, bounds.size);
     }
+
+    public bool[] getColisions()
+    {
+        return new bool[4] {collisionRight, collisionUp, collisionLeft, collisionDown };
+    }
 }
