@@ -5,10 +5,12 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Controller))]
 public class Player: MonoBehaviour {
+    public static LinkedList<Player> instances = new LinkedList<Player>();
     private Controller controller;
     private Vector2 movement;
 
     private void Start() {
+        instances.AddLast(this);
         controller = GetComponent<Controller>();
     }
 

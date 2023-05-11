@@ -6,7 +6,6 @@ using UnityEditor.MemoryProfiler;
 
 public enum State { EMPTY, ROOM, BORDER, CORIDOR_Y, CORIDOR_X, ROOM_INIT }
 
-
 public class WorldGenerator : MonoBehaviour
 {
     static WorldGenerator worldGenerator;
