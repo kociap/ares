@@ -2,40 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pixel : MonoBehaviour
+// data container that has information what type of block to create in certain place
+public class Pixel
 {
-    private State state = State.EMPTY;
-    public GameObject[] states;
+    private int x , y;
+    private TileType state;
+
+    public Pixel(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+        state = TileType.EMPTY;
+    }
 
     public Vector2 GetPosition()
     {
-        return new Vector2((transform.position.x), (transform.position.y));
+        return new Vector2(x, y);
     }
 
-    public static Pixel[] GetPosition(Pixel[,] pixelArea, Vector2[] vectors)
-    {
-        Pixel[] vectorsPixels = new Pixel[vectors.Length];
-        for (int i = 0; i < vectors.Length; i++)
-        {
-            vectorsPixels[i] = pixelArea[(int)vectors[i].x, (int)vectors[i].y];
-        }
-        return vectorsPixels;
-    }
-
-    public void SetState(State state)
+    public void SetState(TileType state)
     {
         this.state = state;
     }
 
-    public State GetState()
+    public new TileType GetType()
     {
         return state;
-    }
-
-    public void GenerateTile(Transform parent)
-    {
-        if(state != State.EMPTY)
-            Instantiate(states[(int)state-1],
-                new Vector3(transform.position.x,transform.position.y,0),Quaternion.identity,parent);
     }
 }

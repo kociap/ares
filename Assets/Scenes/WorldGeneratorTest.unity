@@ -206,11 +206,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8332100633457825860, guid: 0c4b933f247ee88449a4c050ea24bdf2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 101
+      value: 251
       objectReference: {fileID: 0}
     - target: {fileID: 8332100633457825860, guid: 0c4b933f247ee88449a4c050ea24bdf2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 100
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8332100633457825860, guid: 0c4b933f247ee88449a4c050ea24bdf2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -276,7 +276,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 670952329}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 101, y: 100, z: 0}
+  m_LocalPosition: {x: 251, y: 250, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -569,9 +569,14 @@ MonoBehaviour:
   - {fileID: -1714140102763398123, guid: e5633926033424545a59068d5760848a, type: 3}
   - {fileID: 5082895718684199891, guid: aace79a6aca319644b84c993598acb86, type: 3}
   roomGenerationChances: 100
-  width: 200
-  height: 200
-  template: {fileID: 3372357387804469856, guid: 5efd3d6a4b0849f429db60af7e9318f2, type: 3}
+  width: 500
+  height: 500
+  tileTypes:
+  - {fileID: 391225822826015226, guid: b6d6cf1bba8c1d447a5bd1f84429b6c7, type: 3}
+  - {fileID: 7420705043531083784, guid: 3017c7216dd50f74c9221c112a7d5a26, type: 3}
+  - {fileID: 700449580400882674, guid: 1821de48273e8f2418f1e3e192937636, type: 3}
+  - {fileID: 700449580400882674, guid: a46ac786188e5b44aad743543c18a884, type: 3}
+  - {fileID: 7420705043531083784, guid: 6b65b20ccc2ca354b8af18db9d408ca1, type: 3}
 --- !u!4 &2120407454
 Transform:
   m_ObjectHideFlags: 0

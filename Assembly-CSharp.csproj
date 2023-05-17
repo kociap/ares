@@ -65,11 +65,9 @@
     <Compile Include="Assets\Scripts\WorldGenTestScripts\ConnectorCords.cs" />
     <Compile Include="Assets\Scripts\WorldGenTestScripts\Pixel.cs" />
     <Compile Include="Assets\Scripts\FollowingCamera.cs" />
-    <Compile Include="Assets\Scripts\WorldGenTestScripts\Rooms\HorizontalCoridor.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\WorldGenTestScripts\Rooms\Room.cs" />
     <Compile Include="Assets\Scripts\CameraTarget.cs" />
-    <Compile Include="Assets\Scripts\WorldGenTestScripts\Rooms\RectangeRoom.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
