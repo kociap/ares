@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7150609157285884401}
   - component: {fileID: 5082895718684199891}
   m_Layer: 0
-  m_Name: BigRectangleRoom
+  m_Name: 20x14_Layout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
