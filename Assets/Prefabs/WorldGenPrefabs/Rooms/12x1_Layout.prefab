@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7150609157285884401}
   - component: {fileID: 5082895718684199891}
   m_Layer: 0
-  m_Name: SmallRectangleRoom
+  m_Name: 12x1_Layout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   separation: 0
   width: 12
-  height: 8
+  height: 1
   connectorsX:
   - x: -1
     addWidth: 0
@@ -56,28 +56,4 @@ MonoBehaviour:
     addWidth: 1
     y: 0
     addHeight: 0
-  - x: -1
-    addWidth: 0
-    y: -1
-    addHeight: 1
-  - x: 0
-    addWidth: 1
-    y: -1
-    addHeight: 1
-  connectorsY:
-  - x: 0
-    addWidth: 0
-    y: -1
-    addHeight: 0
-  - x: -1
-    addWidth: 1
-    y: -1
-    addHeight: 0
-  - x: 0
-    addWidth: 0
-    y: 0
-    addHeight: 1
-  - x: -1
-    addWidth: 1
-    y: 0
-    addHeight: 1
+  connectorsY: []
