@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7150609157285884401}
   - component: {fileID: 5082895718684199891}
   m_Layer: 0
-  m_Name: CorridorX
+  m_Name: 12x8_Layout Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,9 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcd577eba7dd4344898b880260d80f1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  separation: 0
   width: 12
-  height: 1
+  height: 8
   connectorsX:
   - x: -1
     addWidth: 0
@@ -56,4 +55,29 @@ MonoBehaviour:
     addWidth: 1
     y: 0
     addHeight: 0
-  connectorsY: []
+  - x: -1
+    addWidth: 0
+    y: -1
+    addHeight: 1
+  - x: 0
+    addWidth: 1
+    y: -1
+    addHeight: 1
+  connectorsY:
+  - x: 0
+    addWidth: 0
+    y: -1
+    addHeight: 0
+  - x: -1
+    addWidth: 1
+    y: -1
+    addHeight: 0
+  - x: 0
+    addWidth: 0
+    y: 0
+    addHeight: 1
+  - x: -1
+    addWidth: 1
+    y: 0
+    addHeight: 1
+  extraContent: {fileID: 7436687425780217733, guid: 6b5e8472a0f58464ca862b01744c5098, type: 3}
