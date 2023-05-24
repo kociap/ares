@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2148698430060443654}
   m_Layer: 0
   m_Name: Floor
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,6 +100,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heavyObjectTag: Player
+  maxRepairTime: 1000
+  repairTimeRange: 100
 --- !u!95 &8419614351878044717
 Animator:
   serializedVersion: 5
@@ -164,5 +166,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 0.025, y: 0.025}
   m_EdgeRadius: 0

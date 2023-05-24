@@ -4,6 +4,8 @@ using UnityEngine;
 
 [RequireComponent(typeof(Transform))]
 public class Controller: MonoBehaviour {
+    public LayerMask obstacle;
+
     public struct UpdateParameters {
         public Vector2 movement;
         public float time;
@@ -156,7 +158,7 @@ public class Controller: MonoBehaviour {
     ///
     private bool TestOverlap(Vector2 position) {
         Vector2 center = bounds.center;
-        Collider2D collider = Physics2D.OverlapBox(position + center, bounds.size, 0);
+        Collider2D collider = Physics2D.OverlapBox(position + center, bounds.size, 0, obstacle);
         return collider != null;
     }
 

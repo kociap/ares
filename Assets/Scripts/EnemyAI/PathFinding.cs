@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PathFinding : MonoBehaviour
 {
-
     public float speed;
     public float minimumDistanceFromPlayer;
     public LayerMask obstacle;
@@ -12,9 +11,12 @@ public class PathFinding : MonoBehaviour
     private float distance;
     private GameObject player;
 
+    private Controller controller;
+
     // Start is called before the first frame update
     void Start()
     {
+        controller = GetComponent<Controller>();
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
@@ -49,7 +51,14 @@ public class PathFinding : MonoBehaviour
     {
         Vector2 direction = player.transform.position - transform.position;
         // Debug.DrawLine (transform.position, player.transform.position, Color.red);
-        transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, speed * 1.5f * Time.deltaTime);
+        Controller.UpdateParameters parameters = new Controller.UpdateParameters
+        {
+            movement = direction,
+            dTime = Time.fixedDeltaTime,
+            time = Time.time
+        };
+        controller.UpdateController(parameters);
+        //transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, speed * 1.5f * Time.deltaTime);
     }
 
     void moveRandom(){
