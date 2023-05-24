@@ -6,13 +6,13 @@ using UnityEngine;
 public class Pixel
 {
     private int x , y;
-    private TileType state;
+    private TileType tileType;
 
     public Pixel(int x, int y)
     {
         this.x = x;
         this.y = y;
-        state = TileType.EMPTY;
+        tileType = TileType.EMPTY;
     }
 
     public Vector2 GetPosition()
@@ -20,13 +20,13 @@ public class Pixel
         return new Vector2(x, y);
     }
 
-    public void SetState(TileType state)
+    public void SetTileType(TileType tileType)
     {
-        this.state = state;
+        this.tileType = tileType;
     }
 
     public new TileType GetType()
     {
-        return state;
+        return tileType;
     }
 }

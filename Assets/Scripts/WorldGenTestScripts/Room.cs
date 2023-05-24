@@ -14,39 +14,49 @@ public class Room : MonoBehaviour
     // Prefab wich contains objects like enemies, chests ect.
     public GameObject extraContent;
 
-    // Checks if room has any valid connector (in given orientation) to startPosition
-    public Vector2 GetValidPlace(WorldGenerator worldGenerator, Vector2 startPosition, bool horizontalConnecting)
+    // Represents rooms bottom left corner when position is estabished
+    private Vector2 bottomLeftCorner;
+
+    // Returns place where room can be placed, given one connector that is already on map. 
+    public Vector2 GetValidPlace(WorldGenerator worldGenerator, Vector2 connectorFromOtherRoom, ConnectionType connecting)
     {
-        List<Vector2> connectorVectors = new List<Vector2>();
-        List<Pixel> validConnectors = new List<Pixel>();
-        connectorVectors.AddRange(GetConnectorsVectors(startPosition, horizontalConnecting));
-        validConnectors.AddRange(VectorsToPixels(worldGenerator.GetPixels(), connectorVectors.ToArray()));
-        foreach (var connector in connectorVectors)
+        List<Vector2> roomsConnectorVectors = new List<Vector2>();
+        List<Pixel> roomsValidConnectors = new List<Pixel>();
+        if (connecting == ConnectionType.HORIZONTAL)
         {
-            CheckConnectorValidity(worldGenerator, startPosition, validConnectors, connector);
+            roomsConnectorVectors.AddRange(GetConnectorsVectors(connectorFromOtherRoom, connectorsX));
         }
-        return pickValidConnectorIfExists(startPosition, validConnectors);
+        else
+        {
+            roomsConnectorVectors.AddRange(GetConnectorsVectors(connectorFromOtherRoom, connectorsY));
+        }
+        roomsValidConnectors.AddRange(GetPixelsSubset(worldGenerator.GetPixels(), roomsConnectorVectors.ToArray()));
+        foreach (var connectorVector in roomsConnectorVectors)
+        {
+            removeIfNotValid(worldGenerator, connectorFromOtherRoom, roomsValidConnectors, connectorVector);
+        }
+        return pickValidConnectorIfExists(connectorFromOtherRoom, roomsValidConnectors);
     }
 
-    /* 
-     * Picks random connector from valid ones and returns position where room can be placed
-     * (bottom left angle of rooms area when connected to picked connector)
-     */
-    private Vector2 pickValidConnectorIfExists(Vector2 startPosition, List<Pixel> validConnectors)
+    // Returns random valid connector from this room,
+    // wich combined with connector from other room
+    // will not cause this room to colide with another already existing
+    private Vector2 pickValidConnectorIfExists(Vector2 connectorFromOtherRoom, List<Pixel> validConnectors)
     {
         if (validConnectors.Count == 0)
         {
             return WorldGenerator.NOWHERE;
         }
         Vector3 pickedConnector = validConnectors[Random.Range(0,validConnectors.Count)].GetPosition();
-        return new Vector2(2 * startPosition.x - pickedConnector.x, 2 * startPosition.y - pickedConnector.y);
+        return new Vector2(2 * connectorFromOtherRoom.x - pickedConnector.x, 2 * connectorFromOtherRoom.y - pickedConnector.y);
     }
 
-    // Checks if connector places room in valid position
-    private void CheckConnectorValidity(WorldGenerator worldGenerator, Vector2 startPosition, List<Pixel> validConnectors, Vector2 connectorPos)
+    // removes connector from list if connector is not valid
+    private void removeIfNotValid(WorldGenerator worldGenerator, Vector2 connectorFromOtherRoom,
+                                        List<Pixel> validConnectors, Vector2 connectorPos)
     {
-        int startingX = (int)(2 * startPosition.x - connectorPos.x);
-        int startingY = (int)(2 * startPosition.y - connectorPos.y);
+        int startingX = (int)(2 * connectorFromOtherRoom.x - connectorPos.x);
+        int startingY = (int)(2 * connectorFromOtherRoom.y - connectorPos.y);
         for (int x = startingX; x <= startingX + width; x++)
         {
             for (int y = startingY; y <= startingY + height; y++)
@@ -59,38 +69,39 @@ public class Room : MonoBehaviour
         }
     }
 
-    // Sets area where room will be generated
-    public Pixel[] SetPlace(Pixel[,] pixels, Vector2 startPosition)
+    // Sets room tiles on map
+    public void SetRoomOnMap(Pixel[,] pixels, Vector2 bottomLefttCorner)
     {
-        FillRoom(pixels, startPosition);
-        FillSpecialTiles(pixels, startPosition);
-        return GetConnectors(pixels, startPosition);
+        this.bottomLeftCorner = bottomLefttCorner;
+        SetRoomFloorOnMap(pixels);
+        SetSpecialTilesOnMap(pixels);
     }
 
-    // Sets connectors and content tiles (ressponsible for generating stuff inside) to room
-    private void FillSpecialTiles(Pixel[,] pixels, Vector2 startPosition)
+    // Sets special tiles (like connectors)
+    private void SetSpecialTilesOnMap(Pixel[,] pixels)
     {
-        SetState(VectorsToPixels(pixels, GetConnectorsVectors(startPosition, connectorsY)), TileType.CORIDOR_Y);
-        SetState(VectorsToPixels(pixels, GetConnectorsVectors(startPosition, connectorsX)), TileType.CORIDOR_X);
+        SetTileType(GetPixelsSubset(pixels, GetConnectorsVectors(bottomLeftCorner, connectorsY)), TileType.CORIDOR_Y);
+        SetTileType(GetPixelsSubset(pixels, GetConnectorsVectors(bottomLeftCorner, connectorsX)), TileType.CORIDOR_X);
     }
 
-    // Sets room space
-    private void FillRoom(Pixel[,] pixels,Vector2 startPosition)
+    // Sets rooms floor
+    private void SetRoomFloorOnMap(Pixel[,] pixels)
     {
-        for (int x = (int)startPosition.x; x < (int)startPosition.x + width; x++)
+        for (int x = (int)bottomLeftCorner.x; x < (int)bottomLeftCorner.x + width; x++)
         {
-            for (int y = (int)startPosition.y; y < (int)startPosition.y + height; y++)
+            for (int y = (int)bottomLeftCorner.y; y < (int)bottomLeftCorner.y + height; y++)
             {
-                pixels[x, y].SetState(TileType.ROOM);
+                pixels[x, y].SetTileType(TileType.ROOM);
             }
         }
     }
 
-    private Pixel[] GetConnectors(Pixel[,] pixels, Vector2 startPosition)
+    public Pixel[] GetConnectors(Pixel[,] pixels, Vector2 givenBottomLeftCorner)
     {
-        return VectorsToPixels(pixels, GetConnectorsVectors(startPosition));
+        return GetPixelsSubset(pixels, GetConnectorsVectors(givenBottomLeftCorner));
     }
 
+    // Returns connectors placement relative to given startPos
     private Vector2[] GetConnectorsVectors(Vector2 startPosition,List<ConnectorCords> cords)
     {
         Vector2[] connectors = new Vector2[cords.Count];
@@ -102,25 +113,20 @@ public class Room : MonoBehaviour
         return connectors;
     }
 
+    // Returns connectors placement relative to given startPos
     private Vector2[] GetConnectorsVectors(Vector2 startPosition)
     {
         return GetConnectorsVectors(startPosition, connectorsY)
                 .Concat(GetConnectorsVectors(startPosition,connectorsX)).ToArray();
     }
 
-    private Vector2[] GetConnectorsVectors(Vector2 startPosition, bool horizontalConnecting)
-    {
-        return horizontalConnecting ? 
-            GetConnectorsVectors(startPosition, connectorsX) :
-            GetConnectorsVectors(startPosition, connectorsY);
-    }
-
-    private Pixel[] VectorsToPixels(Pixel[,] pixelArea, Vector2[] vectors)
+    // Returns pixel subset specified by vectors
+    private Pixel[] GetPixelsSubset(Pixel[,] pixels, Vector2[] vectors)
     {
         Pixel[] vectorsPixels = new Pixel[vectors.Length];
         for (int i = 0; i < vectors.Length; i++)
         {
-            vectorsPixels[i] = pixelArea[(int)vectors[i].x, (int)vectors[i].y];
+            vectorsPixels[i] = pixels[(int)vectors[i].x, (int)vectors[i].y];
         }
         return vectorsPixels;
     }
@@ -128,19 +134,21 @@ public class Room : MonoBehaviour
     // Chceks if point cant be overriten by room
     private bool IsOccupied(WorldGenerator worldGenerator, Vector2 point)
     {
-        if (worldGenerator.OutsideWorldBorder(point))
+        if (worldGenerator.IsOutsideWorldBorder(point))
+        {
             return true;
+        }
         var state = worldGenerator.GetPixels()[(int)point.x, (int)point.y].GetType();
         return state != TileType.EMPTY &&
                state != TileType.CORIDOR_Y &&
                state != TileType.CORIDOR_Y;
     }
 
-    private void SetState(Pixel[] pixels, TileType state)
+    private void SetTileType(Pixel[] pixels, TileType tileType)
     {
         foreach (Pixel pixel in pixels)
         {
-            pixel.SetState(state);
+            pixel.SetTileType(tileType);
         }
     }
 }
