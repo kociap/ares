@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum TileType { EMPTY, ROOM, BORDER, CORIDOR_Y, CORIDOR_X}
+public enum ConnectionType { HORIZONTAL, VERTICAL}
 
 //class containing main world generator logic
 public class WorldGenerator : MonoBehaviour
@@ -21,10 +22,8 @@ public class WorldGenerator : MonoBehaviour
     // List of pixels that can be connected to in specyfic direction
     private List<Pixel> connectionsX = new List<Pixel>();
     private List<Pixel> connectionsY = new List<Pixel>();
-    /* 
-     * List of objects that contain additional content after
-     * base shape of dungeon will be created (for example enemies, traps)
-     */
+    //List of objects that contain additional content after
+    //base shape of dungeon will be created (for example enemies, traps)
     private List<GameObject> extraContent = new List<GameObject>();
     // Vector encoding of lack of place available
     public static Vector2 NOWHERE = new Vector2(-1,-1);
@@ -60,7 +59,7 @@ public class WorldGenerator : MonoBehaviour
 
     public void ChangePixelState(Vector2 point, TileType state)
     {
-        pixels[(int)point.x, (int)point.y].SetState(state);
+        pixels[(int)point.x, (int)point.y].SetTileType(state);
     }
 
     // sets position of rooms on map
@@ -70,7 +69,7 @@ public class WorldGenerator : MonoBehaviour
         {
             for (int j = 0; j < roomGenerationChances; j++)
             {
-                if (TryCreateRoom(i) || !AnyConnections(connectionsX, connectionsY))
+                if (TryCreateRoom(i) || !AnyConnectionsPresent(connectionsX, connectionsY))
                 {
                     break;
                 }
@@ -86,27 +85,36 @@ public class WorldGenerator : MonoBehaviour
     // One try of seting room in certain place
     private bool TryCreateRoom(int roomID)
     {
-        bool connectionOrientation = chooseConnectionOrientation(connectionsX, connectionsY);
-        Vector2 connector = ChooseConnection(connectionsX, connectionsY, connectionOrientation).GetPosition();
-        Vector2 startPoint = rooms[roomID].GetValidPlace(this, connector, connectionOrientation);
-        if (startPoint != NOWHERE)
+        ConnectionType connectionOrientation = ChooseConnectionOrientation(connectionsX, connectionsY);
+        Vector2 connectorPos;
+        if (connectionOrientation == ConnectionType.HORIZONTAL)
         {
-            Pixel[] newConnections = rooms[roomID].SetPlace(pixels, startPoint);
-            ManageNewConnections(connectionsX, connectionsY, newConnections);
-            ManageNewExtraContent(startPoint, roomID);
+            connectorPos = ChooseRandomPixelPos(connectionsX);
+        }
+        else
+        {
+            connectorPos = ChooseRandomPixelPos(connectionsY);
+        }
+        Vector2 newRoomBottomLeftCorner = rooms[roomID].GetValidPlace(this, connectorPos, connectionOrientation);
+        if (newRoomBottomLeftCorner != NOWHERE)
+        {
+            rooms[roomID].SetRoomOnMap(pixels, newRoomBottomLeftCorner);
+            Pixel[] newConnections = rooms[roomID].GetConnectors(pixels, newRoomBottomLeftCorner);
+            SortNewConnections(connectionsX, connectionsY, newConnections);
+            AddNewExtraContent(newRoomBottomLeftCorner, roomID);
             return true;
         }
         return false;
     }
 
     // After room is layed out adds new extra content to be showed up in same place in next steps
-    private void ManageNewExtraContent(Vector2 startPoint, int roomID)
+    private void AddNewExtraContent(Vector2 roomsBottomRightCorner, int roomID)
     {
         GameObject roomContent = rooms[roomID].extraContent;
         if (roomContent != null)
         {
             var roomContentInstance = Instantiate(roomContent);
-            roomContentInstance.transform.position = startPoint;
+            roomContentInstance.transform.position = roomsBottomRightCorner;
             roomContentInstance.transform.parent = transform;
             roomContentInstance.SetActive(false);
             extraContent.Add(roomContentInstance);
@@ -114,7 +122,7 @@ public class WorldGenerator : MonoBehaviour
     }
 
     // After room is layed out adds new room connection to connection lists
-    private void ManageNewConnections(List<Pixel> connectionsX, List<Pixel> connectionsY, Pixel[] newConnections)
+    private void SortNewConnections(List<Pixel> connectionsX, List<Pixel> connectionsY, Pixel[] newConnections)
     {
         for (int k = 0; k < newConnections.Length; k++)
         {
@@ -130,34 +138,32 @@ public class WorldGenerator : MonoBehaviour
         }
     }
 
-    // Picks one connection with given orientation in order to check if new room can fit to it
-    private Pixel ChooseConnection(List<Pixel> connectionsX, List<Pixel> connectionsY, bool horizontalConnecting)
+    // Picks one connection position from given list
+    private Vector2 ChooseRandomPixelPos(List<Pixel> pixelList)
     {
-        return horizontalConnecting ? 
-                connectionsX[Random.Range(0, connectionsX.Count)] :
-                connectionsY[Random.Range(0, connectionsY.Count)];
+        return pixelList[Random.Range(0, pixelList.Count)].GetPosition();
     }
 
     // Chooses connection orientation (horizontal or vertical) from existing connectors
-    private bool chooseConnectionOrientation(List<Pixel> connectionsX, List<Pixel> connectionsY)
+    private ConnectionType ChooseConnectionOrientation(List<Pixel> connectionsX, List<Pixel> connectionsY)
     {
-        if(ConnectionsAvailable(connectionsX, connectionsY))
+        if(BothConnectionsPresent(connectionsX, connectionsY))
         {
-            return Random.Range(0, 2) == 0;
+            return (ConnectionType)Random.Range(0, 2);
         }
         else if(connectionsY.Count != 0)
         {
-            return false;
+            return ConnectionType.VERTICAL;
         }   
-        return true;
+        return ConnectionType.HORIZONTAL;
     }
 
-    private bool ConnectionsAvailable(List<Pixel> connectionsX, List<Pixel> connectionsY)
+    private bool BothConnectionsPresent(List<Pixel> connectionsX, List<Pixel> connectionsY)
     {
         return connectionsX.Count != 0 && connectionsY.Count != 0;
     }
 
-    private bool AnyConnections(List<Pixel> connectionsX, List<Pixel> connectionsY)
+    private bool AnyConnectionsPresent(List<Pixel> connectionsX, List<Pixel> connectionsY)
     {
         return connectionsX.Count != 0 || connectionsY.Count != 0;
     }
@@ -197,12 +203,12 @@ public class WorldGenerator : MonoBehaviour
     // Determines if tile is on border
     private bool IsBorderTile(int i, int j)
     {
-        return IsAreaOccupied(new Vector2(i, j), new Vector2(i, j), 1) && EmptyTileInsideWorldBorder(i, j);
+        return IsAreaOccupied(new Vector2(i, j), new Vector2(i, j)) && IsEmptyTileInsideWorldBorder(i, j);
     }
 
-    private bool EmptyTileInsideWorldBorder(int i, int j)
+    private bool IsEmptyTileInsideWorldBorder(int i, int j)
     {
-        return pixels[i, j].GetType() == TileType.EMPTY && !OnWorldBorder(new Vector2(i, j));
+        return pixels[i, j].GetType() == TileType.EMPTY && !IsOnWorldBorder(new Vector2(i, j));
     }
 
     // Removes doors that lead to nowhere
@@ -221,7 +227,7 @@ public class WorldGenerator : MonoBehaviour
         }
     }
 
-    private static bool IsConnectorTile(TileType type)
+    private bool IsConnectorTile(TileType type)
     {
         return type == TileType.CORIDOR_X || type == TileType.CORIDOR_Y;
     }
@@ -238,7 +244,7 @@ public class WorldGenerator : MonoBehaviour
     // Checks if in certain point on map something is already planned to build
     public bool IsOccupied(Vector2 point)
     {
-        if (OutsideWorldBorder(point))
+        if (IsOutsideWorldBorder(point))
         {
             return true;
         }
@@ -246,12 +252,12 @@ public class WorldGenerator : MonoBehaviour
         return  state != TileType.EMPTY && state != TileType.BORDER;
     }
 
-    // Checks if something alse is in certain area, size of area detemined by radious
-    private bool IsAreaOccupied(Vector2 point1, Vector2 point2,int radious)
+    // Returns true if something else is in certain area or on areas border
+    private bool IsAreaOccupied(Vector2 point1, Vector2 point2)
     {
-        for (int x = (int)point1.x - radious; x <= (int)point2.x + radious; x++)
+        for (int x = (int)point1.x - 1; x <= (int)point2.x + 1; x++)
         {
-            for (int y = (int)point1.y - radious; y <= (int)point2.y + radious; y++)
+            for (int y = (int)point1.y - 1; y <= (int)point2.y + 1; y++)
             {
                 if(IsOccupied(new Vector2(x,y)))
                     return true;
@@ -260,12 +266,12 @@ public class WorldGenerator : MonoBehaviour
         return false;
     }
 
-    public bool OutsideWorldBorder(Vector2 point)
+    public bool IsOutsideWorldBorder(Vector2 point)
     {
         return point.x < 0 || point.y < 0 || point.x >= width || point.y >= height;
     }
 
-    private bool OnWorldBorder(Vector2 point)
+    private bool IsOnWorldBorder(Vector2 point)
     {
         return point.x == 0 || point.y == 0 || point.x == width - 1 || point.y == height - 1;
     }
