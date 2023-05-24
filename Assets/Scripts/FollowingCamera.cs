@@ -21,4 +21,13 @@ public class FollowingCamera: MonoBehaviour {
         this.target = target;
         Update();
     }
+
+    private void FixedUpdate()
+    {
+        if(target == null)
+        {
+            Debug.Log(GameObject.FindGameObjectWithTag("Player"));
+            target = GameObject.FindGameObjectWithTag("Player").GetComponent<CameraTarget>();
+        }
+    }
 }
