@@ -36,4 +36,9 @@ public class Player: MonoBehaviour {
         Debug.Log("Dash!");
         controller.BeginDash();
     }
+
+    public Vector2 getMovement()
+    {
+        return movement;
+    }
 }
