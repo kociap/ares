@@ -61,12 +61,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 499c889449758054db16ca305556f8d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 30
-  maxVelocity: 5
+  acceleration: 9
+  maxVelocity: 7.5
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
-  collisionPrecheckLength: 0.1
+    m_Extent: {x: 0.48, y: 0.48, z: 0}
+  collisionPrecheckLength: 0.05
   collisionIterations: 10
   drawDebugShapes: 0
 --- !u!114 &7221607007386269151
