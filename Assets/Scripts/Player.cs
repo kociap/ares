@@ -24,4 +24,9 @@ public class Player: MonoBehaviour {
     private void OnMove(InputValue input) {
         movement = input.Get<Vector2>();
     }
+
+    public Vector2 getMovement()
+    {
+        return movement;
+    }
 }
