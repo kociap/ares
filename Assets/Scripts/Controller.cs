@@ -15,6 +15,7 @@ public class Controller: MonoBehaviour {
     private float acceleration = 1.0f;
     [SerializeField]
     private float maxVelocity = 1.0f;
+    // Normalised vector representing the direction of the velocity.
     private Vector2 velocity;
 
     [Header("Collisions")]
@@ -58,25 +59,13 @@ public class Controller: MonoBehaviour {
         // We gradually accelerate or decelerate until max speed is reached.
         float dTime = parameters.dTime;
         Vector2 movement = parameters.movement;
-        if(movement.x != 0) {
-            velocity.x += Mathf.Sign(movement.x) * acceleration * dTime;
-            velocity.x = Mathf.Clamp(velocity.x, -maxVelocity, maxVelocity);
-        } else {
-            velocity.x = Mathf.MoveTowards(velocity.x, 0.0f, acceleration * dTime);
-        }
+        velocity.x = Mathf.MoveTowards(velocity.x, movement.x, acceleration * dTime);
+        velocity.y = Mathf.MoveTowards(velocity.y, movement.y, acceleration * dTime);
 
         // If collision has been detected, zero the velocity. This allows us to
         // slide along a wall.
         if(velocity.x > 0 && collisionRight || velocity.x < 0 && collisionLeft) {
             velocity.x = 0;
-        }
-
-        // Identical to the X axis.
-        if(movement.y != 0) {
-            velocity.y += Mathf.Sign(movement.y) * acceleration * dTime;
-            velocity.y = Mathf.Clamp(velocity.y, -maxVelocity, maxVelocity);
-        } else {
-            velocity.y = Mathf.MoveTowards(velocity.y, 0.0f, acceleration * dTime);
         }
 
         if(velocity.y > 0 && collisionUp || velocity.y < 0 && collisionDown) {
@@ -87,7 +76,7 @@ public class Controller: MonoBehaviour {
     private void Move(UpdateParameters parameters) {
         // Perform box overlaps incrementally moving the collision box closer
         // toward the farthest reachable point.
-        Vector2 displacement = velocity * parameters.dTime;
+        Vector2 displacement = maxVelocity * velocity * parameters.dTime;
         Vector2 startingPosition = transform.position;
         Vector2 farthestPosition = startingPosition + displacement;
         Vector2 finalPosition = startingPosition;

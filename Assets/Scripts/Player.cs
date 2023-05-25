@@ -23,5 +23,8 @@ public class Player: MonoBehaviour {
 
     private void OnMove(InputValue input) {
         movement = input.Get<Vector2>();
+        if(movement.sqrMagnitude > 1) {
+            movement.Normalize();
+        }
     }
 }
