@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PathFinding : MonoBehaviour
 {
+    enum State {IDLE, CHASING}
+    private State state = State.IDLE;
+
     public float speed;
     public float minimumDistanceFromPlayer;
     public LayerMask obstacle;
@@ -22,15 +25,38 @@ public class PathFinding : MonoBehaviour
 
     void FixedUpdate()
     {
-        distance = Vector2.Distance(transform.position, player.transform.position);
-
-        if (1 <= distance && playerInView()) 
+        if(player == null)
         {
-            moveTowardPlayer();
+            return;
         }
-        else
+        switch(state)
         {
-            moveRandom();
+            case State.IDLE:
+                IdleStateAction();
+                break;
+            case State.CHASING:
+                ChasingStateAction();
+                break;
+        }
+    }
+
+    void IdleStateAction()
+    {
+        moveRandom();
+        distance = Vector2.Distance(transform.position, player.transform.position);
+        if(1 <= distance && playerInView())
+        {
+            state = State.CHASING;
+        }
+    }
+
+    void ChasingStateAction()
+    {
+        moveTowardPlayer();
+        distance = Vector2.Distance(transform.position, player.transform.position);
+        if(1 > distance || !playerInView())
+        {
+            state = State.CHASING;
         }
     }
 
