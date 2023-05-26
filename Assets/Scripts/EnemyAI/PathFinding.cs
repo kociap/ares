@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PathFinding : MonoBehaviour
+public class PathFinding : Entitiy
 {
     enum State {IDLE, CHASING}
     private State state = State.IDLE;
 
-    public float speed;
     public float minimumDistanceFromPlayer;
     public LayerMask obstacle;
+
+    public Gun gun;
 
     private float distance;
     private GameObject player;
@@ -42,6 +43,10 @@ public class PathFinding : MonoBehaviour
 
     void IdleStateAction()
     {
+        if (gun != null)
+        {
+            gun.enabled = false;
+        }
         moveRandom();
         distance = Vector2.Distance(transform.position, player.transform.position);
         if(1 <= distance && playerInView())
@@ -52,11 +57,15 @@ public class PathFinding : MonoBehaviour
 
     void ChasingStateAction()
     {
+        if (gun != null)
+        {
+            gun.enabled = true;
+        }
         moveTowardPlayer();
         distance = Vector2.Distance(transform.position, player.transform.position);
         if(1 > distance || !playerInView())
         {
-            state = State.CHASING;
+            state = State.IDLE;
         }
     }
 
@@ -75,11 +84,12 @@ public class PathFinding : MonoBehaviour
 
     void moveTowardPlayer()
     {
-        Vector2 direction = player.transform.position - transform.position;
+        movement = player.transform.position - transform.position;
+        movement = movement.normalized;
         // Debug.DrawLine (transform.position, player.transform.position, Color.red);
         Controller.UpdateParameters parameters = new Controller.UpdateParameters
         {
-            movement = direction,
+            movement = movement,
             dTime = Time.fixedDeltaTime,
             time = Time.time
         };
@@ -88,6 +98,7 @@ public class PathFinding : MonoBehaviour
     }
 
     void moveRandom(){
+        movement = Vector2.zero;
         // Vector2 newPosition;
 
         // GameObject.FindGameObjectWithTag("Player");

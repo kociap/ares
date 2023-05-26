@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Bullet
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -11,7 +13,7 @@ TagManager:
   - BlockingLayer
   - Water
   - UI
-  - 
+  - Bullet
   - 
   - 
   - 
@@ -49,4 +51,10 @@ TagManager:
     locked: 0
   - name: Walls
     uniqueID: 3265001307
+    locked: 0
+  - name: Entities
+    uniqueID: 1981605325
+    locked: 0
+  - name: Tall
+    uniqueID: 3574153273
     locked: 0
