@@ -63,6 +63,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acceleration: 9
   maxVelocity: 7.5
+  dashInitialVelocityFactor: 3
+  dashDuration: 0.3
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.48, y: 0.48, z: 0}
