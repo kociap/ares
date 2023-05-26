@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Controller))]
-public class Player: MonoBehaviour {
+public class Player: Entitiy
+{
     private Controller controller;
-    private Vector2 movement;
 
     private void Start() {
         controller = GetComponent<Controller>();
@@ -23,10 +23,5 @@ public class Player: MonoBehaviour {
 
     private void OnMove(InputValue input) {
         movement = input.Get<Vector2>();
-    }
-
-    public Vector2 getMovement()
-    {
-        return movement;
     }
 }

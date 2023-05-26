@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
-    public Player player;
+    public Entitiy entity;
     private Animator animator;
 
     void Start()
@@ -14,13 +14,9 @@ public class PlayerAnimation : MonoBehaviour
 
     void FixedUpdate()
     {
-        var movement = player.getMovement();
+        var movement = entity.getMovement();
         bool flipped = movement.x < 0;
         bool isMoving = movement != Vector2.zero;
-        if (isMoving)
-        {
-            Debug.Log("rusza sie");
-        }
         transform.rotation = Quaternion.Euler(new Vector3(0f, flipped ? 180f : 0f, 0f));
         animator.SetBool("Moving", isMoving);
     }
