@@ -361,6 +361,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPlayer: 1
   initialHp: 10
+  dieSound: {fileID: 0}
+  ouchSound: {fileID: 8300000, guid: 6f5cb5d8ea21bbd4884679c65193e41e, type: 3}
+  drop: {fileID: 0}
 --- !u!114 &6750051340687159817
 MonoBehaviour:
   m_ObjectHideFlags: 0

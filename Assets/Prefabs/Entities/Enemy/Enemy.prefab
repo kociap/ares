@@ -326,6 +326,7 @@ MonoBehaviour:
   isPlayer: 0
   initialHp: 2
   dieSound: {fileID: 8300000, guid: ee24235546447b843a03f82e6ae8317d, type: 3}
+  drop: {fileID: 4906668610586646214, guid: efbe3eee149b40a4db16e39a52809052, type: 3}
 --- !u!114 &5521950685936561176
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,6 +10,9 @@ public class Hp1 : MonoBehaviour
     public int initialHp;
 
     public AudioClip dieSound;
+    public AudioClip ouchSound;
+
+    public GameObject drop;
 
     private int hpLevel;
     
@@ -22,12 +25,21 @@ public class Hp1 : MonoBehaviour
 
     public void dealDamage(int damage){
         hpLevel -= damage;
+        if(isPlayer)
+        {
+            SoundPlayer.PlaySound(ouchSound);
+        }
         if(hpLevel <= 0)
         {
             if (!isPlayer)
             {
                 if(dieSound != null){
                     SoundPlayer.PlaySound(dieSound);
+                }
+                if(drop != null)
+                {
+                    var newDrop = Instantiate(drop);
+                    newDrop.transform.position = transform.position;
                 }
                 Destroy(gameObject);
             }
