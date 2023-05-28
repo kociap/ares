@@ -312,7 +312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageToImpose: 5
-  toAtackTag: Player
+  toAttackTag: Player
 --- !u!114 &8735250472476914748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,7 +343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageToImpose: 1
-  toAtackTag: Bullet
+  toAttackTag: Bullet
 --- !u!1 &5999038645278046210
 GameObject:
   m_ObjectHideFlags: 0

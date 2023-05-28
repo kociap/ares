@@ -222,7 +222,7 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -378,7 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageToImpose: 10
-  toAtackTag: Enemy
+  toAttackTag: Enemy
 --- !u!1 &9171470516250263386
 GameObject:
   m_ObjectHideFlags: 0

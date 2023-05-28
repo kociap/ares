@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 5158069873135110485}
   - component: {fileID: 1140805385718664154}
   - component: {fileID: 8307402411533562710}
-  - component: {fileID: 5671806759117202586}
   m_Layer: 3
   m_Name: Wall 1
   m_TagString: Untagged
@@ -173,21 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageToImpose: 100
-  toAtackTag: B
---- !u!114 &5671806759117202586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7391228231205980703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f3debd7d34e94c45acf613a617824cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageToImpose: 100
-  toAtackTag: Bullet
+  toAttackTag: Bullet
 --- !u!1 &7818584442436238047
 GameObject:
   m_ObjectHideFlags: 0

@@ -121,6 +121,8 @@ MonoBehaviour:
     m_Bits: 0
   acceleration: 10000
   maxVelocity: 10
+  dashInitialVelocityFactor: 2
+  dashDuration: 1
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
@@ -139,7 +141,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7952525c267bae44b8da0d66283f71a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayer: 0
   initialHp: 1
+  dieSound: {fileID: 0}
+  ouchSound: {fileID: 0}
+  drop: {fileID: 0}
 --- !u!58 &2371500538751444495
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -215,4 +221,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageToImpose: 1
-  toAtackTag: Player
+  toAttackTag: Player

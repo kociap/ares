@@ -22,6 +22,7 @@ public class Player: Entitiy
 
     private void OnMove(InputValue input) {
         movement = input.Get<Vector2>();
+        Debug.Log("Movement!");
         if(movement.sqrMagnitude > 1) {
             movement.Normalize();
         }

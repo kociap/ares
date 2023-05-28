@@ -5,13 +5,15 @@ using UnityEngine;
 public class Atack : MonoBehaviour
 {
 
-    public int damageToImpose;
-
-    public string toAtackTag;
+    [SerializeField]
+    private int damageToImpose;
+    [SerializeField]
+    private string toAttackTag;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag(toAtackTag))
+        Debug.Log("collider " + other + "; tag " + toAttackTag);
+        if (other.CompareTag(toAttackTag))
         {
             var hp = other.GetComponent<Hp1>();
             hp.dealDamage(damageToImpose);
