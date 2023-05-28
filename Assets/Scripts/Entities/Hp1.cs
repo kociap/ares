@@ -45,6 +45,7 @@ public class Hp1 : MonoBehaviour
             }
             else
             {
+                PlayerPrefs.SetInt("Money", 0);
                 SceneManager.LoadScene("Scenes/Lose");
             }
         }

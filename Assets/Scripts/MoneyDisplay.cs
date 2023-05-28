@@ -7,12 +7,19 @@ public class MoneyDisplay : MonoBehaviour
 {
     public Text text;
 
-    public int money = 0;
+    public int money;
+
+    public void Start()
+    {
+        money = PlayerPrefs.HasKey("Money") ? PlayerPrefs.GetInt("Money") : 0;
+        text.text = "Money: " + money.ToString();
+    }
 
     public void AddMoney(int newMoney)
     {
         Debug.Log("Display");
         money += newMoney;
         text.text = "Money: "+ money.ToString();
+        PlayerPrefs.SetInt("Money", money);
     }
 }
