@@ -7,3 +7,7 @@ UserSettings/
 # Editors
 .vscode/
 .vs/
+
+# VS Files
+*.sln
+*.csproj
