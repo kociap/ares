@@ -17,7 +17,29 @@ public class Controller: MonoBehaviour {
     private float acceleration = 1.0f;
     [SerializeField]
     private float maxVelocity = 1.0f;
+    // Velocity represents the current direction of the velocity with length
+    // subject to scale to support sub and sup max velocity speeds.
     private Vector2 velocity;
+    private Vector2 lastVelocityDirection;
+
+    public Vector2 GetVelocity() {
+        return maxVelocity * velocity;
+    }
+
+    [Header("Dash")]
+    [SerializeField]
+    private float dashInitialVelocityFactor = 2.0f;
+    [SerializeField]
+    private float dashDuration = 1.0f;
+    private float dashAcceleration = 0.5f;
+    private Vector2 dashTargetVelocity;
+    private float dashCurrentTime = 0.0f;
+    private bool dashing = false;
+    private bool startDashThisUpdate = false;
+
+    public bool IsDashing() {
+        return dashing;
+    }
 
     [Header("Collisions")]
     [SerializeField]
@@ -34,6 +56,12 @@ public class Controller: MonoBehaviour {
     [Header("Debug")]
     [SerializeField]
     private bool drawDebugShapes = false;
+
+    public void BeginDash() {
+        startDashThisUpdate = true;
+        dashTargetVelocity = velocity;
+        dashCurrentTime = dashDuration;
+    }
 
     /// UpdateController
     /// Attempts to alter the state of the character according to the supplied
@@ -57,14 +85,32 @@ public class Controller: MonoBehaviour {
     }
 
     private void CalculateMovement(UpdateParameters parameters) {
-        // We gradually accelerate or decelerate until max speed is reached.
+        if(startDashThisUpdate) {
+            startDashThisUpdate = false;
+            dashing = true;
+            velocity = lastVelocityDirection * dashInitialVelocityFactor;
+            Debug.Log("last: " + lastVelocityDirection + "; target: " + dashTargetVelocity + "; starting: " + velocity);
+            dashAcceleration = (velocity - dashTargetVelocity).magnitude / dashDuration;
+        }
+
+        if(dashing && dashCurrentTime <= 0.0f) {
+            dashing = false;
+        }
+
+        // We gradually accelerate or decelerate until movement speed is reached.
         float dTime = parameters.dTime;
         Vector2 movement = parameters.movement;
-        if(movement.x != 0) {
-            velocity.x += Mathf.Sign(movement.x) * acceleration * dTime;
-            velocity.x = Mathf.Clamp(velocity.x, -maxVelocity, maxVelocity);
+        if(dashing) {
+            // velocity is non-zero, hence we do not have worry about
+            // multiplication with a zero vector.
+            velocity = velocity.normalized * Mathf.MoveTowards(velocity.magnitude, dashTargetVelocity.magnitude, dashAcceleration * dTime);
+            dashCurrentTime -= dTime;
         } else {
-            velocity.x = Mathf.MoveTowards(velocity.x, 0.0f, acceleration * dTime);
+            Vector2 accelerationVector = acceleration * (movement - velocity).normalized;
+            accelerationVector.x = Mathf.Abs(accelerationVector.x);
+            accelerationVector.y = Mathf.Abs(accelerationVector.y);
+            velocity.x = Mathf.MoveTowards(velocity.x, movement.x, accelerationVector.x * dTime);
+            velocity.y = Mathf.MoveTowards(velocity.y, movement.y, accelerationVector.y * dTime);
         }
 
         // If collision has been detected, zero the velocity. This allows us to
@@ -73,23 +119,19 @@ public class Controller: MonoBehaviour {
             velocity.x = 0;
         }
 
-        // Identical to the X axis.
-        if(movement.y != 0) {
-            velocity.y += Mathf.Sign(movement.y) * acceleration * dTime;
-            velocity.y = Mathf.Clamp(velocity.y, -maxVelocity, maxVelocity);
-        } else {
-            velocity.y = Mathf.MoveTowards(velocity.y, 0.0f, acceleration * dTime);
-        }
-
         if(velocity.y > 0 && collisionUp || velocity.y < 0 && collisionDown) {
             velocity.y = 0;
+        }
+
+        if(velocity.sqrMagnitude > 0.01f) {
+            lastVelocityDirection = velocity.normalized;
         }
     }
 
     private void Move(UpdateParameters parameters) {
         // Perform box overlaps incrementally moving the collision box closer
         // toward the farthest reachable point.
-        Vector2 displacement = velocity * parameters.dTime;
+        Vector2 displacement = maxVelocity * velocity * parameters.dTime;
         Vector2 startingPosition = transform.position;
         Vector2 farthestPosition = startingPosition + displacement;
         Vector2 finalPosition = startingPosition;
