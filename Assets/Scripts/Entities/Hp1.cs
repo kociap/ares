@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class Hp1 : MonoBehaviour
 {
+    public bool isPlayer = false;
 
     public int initialHp;
 
@@ -19,7 +21,14 @@ public class Hp1 : MonoBehaviour
         hpLevel -= damage;
         if(hpLevel <= 0)
         {
-            Destroy(gameObject);
+            if (!isPlayer)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                SceneManager.LoadScene("Scenes/Lose");
+            }
         }
     }
 }

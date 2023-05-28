@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Controller))]
 public class Player: Entitiy
 {
+    public Gun gun;
     private Controller controller;
 
     private void Start() {
@@ -30,6 +31,7 @@ public class Player: Entitiy
 
     private void OnAttack() {
         Debug.Log("Attack!");
+        gun.tryToShoot();
     }
 
     private void OnDash() {
