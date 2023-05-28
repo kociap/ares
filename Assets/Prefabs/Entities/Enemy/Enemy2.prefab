@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6dc5330cd96b8314183f3f6980ad20a5, type: 3}
-  m_Color: {r: 0.44705883, g: 0.0450081, b: 0, a: 1}
+  m_Color: {r: 0.6886792, g: 0.048727296, b: 0.665952, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 8735250472476914748}
   - component: {fileID: 5521950685936561176}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy2
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -176,7 +176,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   acceleration: 10
-  maxVelocity: 2
+  maxVelocity: 3
   dashInitialVelocityFactor: 2
   dashDuration: 1
   bounds:
@@ -252,6 +252,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   gun: {fileID: 0}
+  controller: {fileID: 4995784671579257988}
 --- !u!61 &7724953993086425401
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -309,7 +310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f3debd7d34e94c45acf613a617824cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageToImpose: 10
+  damageToImpose: 5
   toAtackTag: Player
 --- !u!114 &8735250472476914748
 MonoBehaviour:
@@ -324,8 +325,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer: 0
-  initialHp: 2
+  initialHp: 1
   dieSound: {fileID: 8300000, guid: ee24235546447b843a03f82e6ae8317d, type: 3}
+  ouchSound: {fileID: 0}
   drop: {fileID: 4906668610586646214, guid: efbe3eee149b40a4db16e39a52809052, type: 3}
 --- !u!114 &5521950685936561176
 MonoBehaviour:

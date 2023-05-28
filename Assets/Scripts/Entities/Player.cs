@@ -6,12 +6,10 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Controller))]
 public class Player: Entitiy
 {
-    public Gun gun;
+    [SerializeField]
     private Controller controller;
-
-    private void Start() {
-        controller = GetComponent<Controller>();
-    }
+    [SerializeField]
+    private Gun gun;
 
     private void Update() {
         Controller.UpdateParameters parameters = new Controller.UpdateParameters{

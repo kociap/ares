@@ -7,7 +7,8 @@ public class PathFinding : Entitiy
     enum State {IDLE, CHASING}
     private State state = State.IDLE;
 
-    public float minimumDistanceFromPlayer;
+    [SerializeField]
+    private float minimumDistanceFromPlayer;
     public LayerMask obstacle;
 
     public Gun gun;
@@ -15,12 +16,11 @@ public class PathFinding : Entitiy
     private float distance;
     private GameObject player;
 
+    [SerializeField]
     private Controller controller;
 
-    // Start is called before the first frame update
     void Start()
     {
-        controller = GetComponent<Controller>();
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
@@ -74,7 +74,7 @@ public class PathFinding : Entitiy
         if(distance > minimumDistanceFromPlayer)
         {
             return false;
-        } 
+        }
         else if (Physics2D.Linecast(transform.position, player.transform.position, obstacle))
         {
             return false;
