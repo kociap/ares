@@ -9,7 +9,10 @@ public class Hp1 : MonoBehaviour
 
     public int initialHp;
 
+    public AudioClip dieSound;
+
     private int hpLevel;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +26,9 @@ public class Hp1 : MonoBehaviour
         {
             if (!isPlayer)
             {
+                if(dieSound != null){
+                    SoundPlayer.PlaySound(dieSound);
+                }
                 Destroy(gameObject);
             }
             else

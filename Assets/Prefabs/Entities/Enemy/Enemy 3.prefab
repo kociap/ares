@@ -178,6 +178,8 @@ MonoBehaviour:
     m_Bits: 8
   acceleration: 10
   maxVelocity: 3
+  dashInitialVelocityFactor: 2
+  dashDuration: 1
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.4, y: 0.4, z: 0}
@@ -322,7 +324,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7952525c267bae44b8da0d66283f71a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayer: 0
   initialHp: 1
+  dieSound: {fileID: 8300000, guid: ee24235546447b843a03f82e6ae8317d, type: 3}
 --- !u!114 &5521950685936561176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,6 +387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rapidFire: 1
+  playerInput: 0
   shootSound: {fileID: 8300000, guid: 00368df55c6111f46b33678fbd6fcbac, type: 3}
   bullet: {fileID: 7553901560041722395, guid: 2ac3705ce12167440ac31737ed274899, type: 3}
   maxReloadTicks: 30

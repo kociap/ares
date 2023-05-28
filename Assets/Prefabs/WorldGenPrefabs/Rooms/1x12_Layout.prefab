@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcd577eba7dd4344898b880260d80f1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  separation: 0
   width: 1
   height: 12
   connectorsX: []
@@ -57,3 +56,4 @@ MonoBehaviour:
     addWidth: 0
     y: 0
     addHeight: 1
+  extraContent: {fileID: 2425644291409449897, guid: b74c2a90ffbbf284490d742e377aba15, type: 3}
