@@ -375,6 +375,7 @@ MonoBehaviour:
   m_Name:
   m_EditorClassIdentifier:
   initialHp: 1
+  dieSound: {fileID: 8300000, guid: ee24235546447b843a03f82e6ae8317d, type: 3}
 --- !u!114 &5521950685936561176
 MonoBehaviour:
   m_ObjectHideFlags: 0
