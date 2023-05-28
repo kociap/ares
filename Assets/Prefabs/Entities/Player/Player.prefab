@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rapidFire: 1
+  playerInput: 1
   shootSound: {fileID: 8300000, guid: 00368df55c6111f46b33678fbd6fcbac, type: 3}
   bullet: {fileID: 7553901560041722395, guid: b5e1a5fbce4ef144a8fe0736eb8ed6a4, type: 3}
   maxReloadTicks: 30
@@ -156,6 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc14d2a5b18c9a341ab55307eaa2ea55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gun: {fileID: 4702381011818318575}
 --- !u!114 &4995784671579257988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,6 +175,8 @@ MonoBehaviour:
     m_Bits: 8
   acceleration: 30
   maxVelocity: 5
+  dashInitialVelocityFactor: 2
+  dashDuration: 1
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.4, y: 0.4, z: 0}
@@ -355,6 +359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7952525c267bae44b8da0d66283f71a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayer: 1
   initialHp: 10
 --- !u!114 &6750051340687159817
 MonoBehaviour:

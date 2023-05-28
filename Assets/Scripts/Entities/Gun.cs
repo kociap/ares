@@ -6,6 +6,7 @@ public class Gun : MonoBehaviour
 {
     //TODO: set false to player after implementation of attack button
     public bool rapidFire = true;
+    public bool playerInput = false;
 
     public AudioClip shootSound;
 
@@ -32,7 +33,7 @@ public class Gun : MonoBehaviour
         {
             currentReloadTicks--;
         }
-        if (rapidFire)
+        if (rapidFire && !playerInput)
         {
             tryToShoot();
         }
